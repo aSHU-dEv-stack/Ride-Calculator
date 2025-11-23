@@ -1,113 +1,128 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <title>Rapido Fare Calculator</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f2f2f2;
-            padding: 30px;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rapido Fare Calculator</title>
 
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: #f7f7f7;
+        margin: 0;
+        padding: 20px;
+    }
+
+    .container {
+        max-width: 450px;
+        margin: auto;
+        background: #fff;
+        padding: 25px;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    label {
+        font-weight: bold;
+        display: block;
+        margin-top: 12px;
+    }
+
+    input {
+        width: 100%;
+        padding: 12px;
+        font-size: 16px;
+        margin-top: 8px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+    }
+
+    button {
+        width: 100%;
+        padding: 14px;
+        font-size: 18px;
+        margin-top: 20px;
+        background: #ffcc00;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        font-weight: bold;
+    }
+
+    button:hover {
+        background: #ffd633;
+    }
+
+    #result {
+        margin-top: 20px;
+        font-size: 20px;
+        text-align: center;
+        font-weight: bold;
+    }
+
+    /* Responsive mobile support */
+    @media (max-width: 480px) {
         .container {
-            background: #fff;
-            padding: 20px;
-            width: 350px;
-            margin: auto;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 18px;
         }
-
-        input {
-            width: 100%;
-            padding: 8px;
-            margin: 8px 0;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-        }
-
-        button {
-            width: 100%;
+        input, button {
             padding: 10px;
-            background: #ffcc00;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: bold;
+            font-size: 15px;
         }
-
-        button:hover {
-            background: #ffdd33;
-        }
-
-        #result {
-            margin-top: 15px;
-            font-size: 18px;
-            font-weight: bold;
-        }
-        
-        /* 🌐 RESPONSIVE */
-        @media (max-width: 480px) {
-            .container {
-                padding: 18px;
-            }
-
-            input,
-            button {
-                font-size: 15px;
-                padding: 10px;
-            }
-        }
-    </style>
+    }
+</style>
 </head>
 
 <body>
 
-    <div class="container">
-        <h2>Rapido Fare Calculator</h2>
+<div class="container">
+    <h2>Rapido Fare Calculator</h2>
 
-        <label>Distance (km)</label>
-        <input type="number" id="distance" placeholder="Enter distance">
+    <label>Distance (km)</label>
+    <input type="number" id="distance" placeholder="Enter distance">
 
-        <label>Ride Time (minutes)</label>
-        <input type="number" id="time" placeholder="Enter ride time">
+    <label>Ride Time (minutes)</label>
+    <input type="number" id="time" placeholder="Enter ride time">
 
-        <label>Surge % (optional)</label>
-        <input type="number" id="surge" placeholder="e.g. 10">
+    <label>Surge % (optional)</label>
+    <input type="number" id="surge" placeholder="Example: 10">
 
-        <button onclick="calculateFare()">Calculate Fare</button>
+    <button onclick="calculateFare()">Calculate Fare</button>
 
-        <div id="result"></div>
-    </div>
+    <div id="result"></div>
+</div>
 
-    <script>
-        function calculateFare() {
-            const distance = parseFloat(document.getElementById("distance").value);
-            const time = parseFloat(document.getElementById("time").value);
-            const surge = parseFloat(document.getElementById("surge").value) || 0;
+<script>
+function calculateFare() {
+    const distance = parseFloat(document.getElementById("distance").value);
+    const time = parseFloat(document.getElementById("time").value);
+    const surge = parseFloat(document.getElementById("surge").value) || 0;
 
-            const baseFare = 15;
-            const perKm = 8;
-            const perMin = 1;
+    // Validation
+    if (isNaN(distance) || isNaN(time)) {
+        document.getElementById("result").innerText = "Please enter valid numbers.";
+        return;
+    }
 
-            if (isNaN(distance) || isNaN(time)) {
-                document.getElementById("result").innerText = "Please enter valid numbers";
-                return;
-            }
+    // Rapido Fare Logic
+    const baseFare = 15;
+    const perKm = 7;
+    const perMin = 1;
 
-            // Formula
-            let fare = baseFare + (perKm * distance) + (perMin * time);
+    let fare = baseFare + (perKm * distance) + (perMin * time);
 
-            // Apply surge if given
-            fare = fare + (fare * (surge / 100));
+    // Apply surge
+    fare += fare * (surge / 100);
 
-            document.getElementById("result").innerText = "Total Fare: ₹" + fare.toFixed(2);
-        }
-    </script>
+    document.getElementById("result").innerHTML =
+        `Total Fare: ₹${fare.toFixed(2)}`;
+}
+</script>
 
 </body>
-
-
 </html>
